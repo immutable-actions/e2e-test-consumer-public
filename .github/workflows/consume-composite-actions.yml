@@ -27,6 +27,6 @@ jobs:
 
 
       - name: Consume package with semver
-        uses: immutable-actions/e2e-test-public-composite-action@v0.0.1
+        uses: immutable-actions/e2e-test-public-composite-action@v0.0.2
         with:
           who-to-greet: "Semver tag composite"
