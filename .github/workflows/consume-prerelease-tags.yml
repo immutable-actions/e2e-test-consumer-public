@@ -1,0 +1,35 @@
+# This test checks that prerelease tags can be used directly
+# to consume Action Packages.
+
+name: Consume Actions with Prerelease Tags
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [trigger-tests]
+  pull_request:
+    types: [opened, reopened]
+  workflow_call:
+    
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-12]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+
+      # Using prerelease tag directly
+      - name: Prerelease tag resolution without v prefix
+        uses: immutable-actions/e2e-test-public-org-accessible-action@0.0.3-alpha.1
+        with:
+          who-to-greet: "Mona Lisa (no prefix)"
+
+
+      # Using prerelease tag with release name
+      - name: Prerelease tag resolution with v prefix
+        uses: immutable-actions/e2e-test-public-org-accessible-action@v0.0.3-alpha.1
+        with:
+          who-to-greet: "Mona Lisa (prefix)"
+
