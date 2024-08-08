@@ -1,0 +1,45 @@
+# This test checks that both old and new "splat version" patterns can be used
+# to consume Action Packages. These should all be resolved to valid versions.
+
+name: Consume Actions with Splat Tags
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [trigger-tests]
+  pull_request:
+    types: [opened, reopened]
+  workflow_call:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-12]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+
+      # Using old school major splat
+      - name: v0 Splat Tag Resolution
+        uses: immutable-actions/e2e-test-public-org-accessible-action@v0
+        with:
+          who-to-greet: "Mona Lisa (v0 tag)"
+
+      # Using old school minor splat
+      - name: v0.0 Splat Tag Resolution
+        uses: immutable-actions/e2e-test-public-org-accessible-action@v0.0
+        with:
+          who-to-greet: "Mona Lisa (v0.0 tag)"
+
+      # Using semver major splat
+      - name: 0.* Splat Tag Resolution
+        uses: immutable-actions/e2e-test-public-org-accessible-action@0.x
+        with:
+          who-to-greet: "Mona Lisa (0.x tag)"
+
+      # Using semver minor splat
+      - name: 0.0.* Splat Tag Resolution
+        uses: immutable-actions/e2e-test-public-org-accessible-action@0.0.x
+        with:
+          who-to-greet: "Mona Lisa (0.0.x tag)"
