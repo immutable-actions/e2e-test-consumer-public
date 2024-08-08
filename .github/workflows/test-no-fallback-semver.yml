@@ -1,0 +1,35 @@
+# This is a test which checks that if a Package is active for an NWO, any attempt to
+# resolve a semver MUST come from the Package. If no such tag exists on the Package,
+# the resolution should fail (not found), which is what we're expecting to happen here.
+# The package in question has tag v1.1.1 and branch v10.10.10
+name: Test no fallback to Repos for Semver tags (will fail)
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [trigger-tests]
+  pull_request:
+    types: [opened, reopened]
+  workflow_call:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-12]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+
+      # It should not be possible to resolve semver tags that don't exist on Package
+      - name: Test resolving existing semver tag fails if not on package
+        uses: immutable-actions/e2e-test-public-org-accessible-action@v1.1.1
+        with:
+          who-to-greet: "Mona Lisa (public)"
+
+
+      # It should not be possible to resolve semver branches that don't exist on Package
+      - name: Test resolving existing semver branch fails if not on package
+        uses: immutable-actions/e2e-test-public-org-accessible-action@v10.10.10
+        with:
+          who-to-greet: "Mona Lisa (public)"
