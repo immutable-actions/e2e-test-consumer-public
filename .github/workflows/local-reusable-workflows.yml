@@ -14,8 +14,6 @@ jobs:
     uses: ./.github/workflows/consume-composite-actions.yml
   consume-multi-dir-actions:
     uses: ./.github/workflows/consume-multi-dir-actions.yml
-  consume-package-actions:
-    uses: ./.github/workflows/consume-package-actions.yml
   consume-prerelease-tags:
     uses: ./.github/workflows/consume-prerelease-tags.yml
   consume-repo-actions:
