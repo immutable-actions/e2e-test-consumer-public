@@ -21,17 +21,17 @@ jobs:
     steps:
 
       - name: Subdir 1 (using semver tag for package)
-        uses: immutable-actions/e2e-test-public-multi-dir-docker-action/action1@0.0.1
+        uses: immutable-actions/e2e-test-public-multi-dir-docker-action/action1@0.0.2
         with:
           who-to-greet: "Action 1"
 
       - name: Subdir 2 (using semver tag for package)
-        uses: immutable-actions/e2e-test-public-multi-dir-docker-action/action2@0.0.1
+        uses: immutable-actions/e2e-test-public-multi-dir-docker-action/action2@0.0.2
         with:
           who-to-greet: "Action 2"
 
       - name: Subdir 3 (using semver tag for package)
-        uses: immutable-actions/e2e-test-public-multi-dir-docker-action/action3@0.0.1
+        uses: immutable-actions/e2e-test-public-multi-dir-docker-action/action3@0.0.2
         with:
           who-to-greet: "Action 3"
 
