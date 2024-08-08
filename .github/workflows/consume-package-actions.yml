@@ -1,7 +1,7 @@
-# This is a basic test that it is possible to consume both private and internal actions
-# as packages when the sharing policy allows.
+# This is a basic test that it is not possible to consume private and internal actions
+# as packages from a public repo
 
-name: Consume Private & Internal Package Actions (Happy Paths)
+name: Consume Private & Internal Package Actions Fails in Public Repos
 
 on:
   workflow_dispatch:
