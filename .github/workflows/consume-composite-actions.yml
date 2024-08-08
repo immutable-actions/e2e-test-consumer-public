@@ -1,0 +1,32 @@
+# This test checks that composite actions referencing both packages and repos
+# can still be resolved.
+
+name: Consume composite actions
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [trigger-tests]
+  pull_request:
+    types: [opened, reopened]
+  workflow_call:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-12]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+
+      - name: Consume main branch
+        uses: immutable-actions/e2e-test-public-composite-action@main
+        with:
+          who-to-greet: "Main branch composite"
+
+
+      - name: Consume package with semver
+        uses: immutable-actions/e2e-test-public-composite-action@v0
+        with:
+          who-to-greet: "Semver tag composite"
