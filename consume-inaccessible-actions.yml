@@ -1,0 +1,35 @@
+# This is a test that internal and private actions which have sharing policy NONE
+# cannot be accessed even within the same org.
+# This should not fall back to repos so we expect this job to fail with NOT FOUND errors.
+name: Consume Inaccessible Package Actions (will fail) 
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [trigger-tests]
+  pull_request:
+    types: [opened, reopened]
+  workflow_call:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-12]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+
+      # Runs our private action in the same org from the package
+      - name: E2e Test Private Action
+        uses: immutable-actions/e2e-test-private-inaccessible-action@0.0.1
+        with:
+          who-to-greet: "Mona Lisa (private)"
+
+      # Runs our internal action in the same org from the package
+      - name: E2e Test Internal Action
+        uses: immutable-actions/e2e-test-internal-inaccessible-action@0.0.1
+        with:
+          who-to-greet: "Mona Lisa (internal)"
+
+      # you can't make public actions inaccessible
