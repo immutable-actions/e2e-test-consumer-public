@@ -1,0 +1,18 @@
+# Kicks off all tests via the repository dispatch event "trigger-tests"
+
+name: Kick Off All Tests
+
+on:
+  workflow_dispatch:
+
+jobs:
+    kick-off-tests:
+        runs-on: ubuntu-latest
+        steps:
+
+            - name: Kick off all tests
+              run: |
+                curl -X POST -H "Accept: application/vnd.github.v3+json" \
+                -H "Authorization: token ${{ secrets.IA_TEST_RUNNER_PAT }}" \
+                https://api.github.com/repos/immutable-actions/e2e-test-consumer-public/dispatches \
+                -d '{"event_type": "trigger-tests"}'
