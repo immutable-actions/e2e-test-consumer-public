@@ -1,7 +1,7 @@
 # This is a basic test that it is not possible to consume private and internal actions
 # as packages from a public repo
 
-name: Consume Private & Internal Package Actions Fails in Public Repos
+name: Consume Private & Internal Package Actions Fails in Public Repos (Will fail!)
 
 on:
   workflow_dispatch:
