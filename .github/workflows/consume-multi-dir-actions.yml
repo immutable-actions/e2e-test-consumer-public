@@ -1,0 +1,51 @@
+# This test checks that actions which have action.yml files in subdirectories can
+# still be consumed from Action Packages.
+
+name: Consume multi-dir action packages
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [trigger-tests]
+  pull_request:
+    types: [opened, reopened]
+  workflow_call:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-12]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+
+      - name: Subdir 1 (using semver tag for package)
+        uses: immutable-actions/e2e-test-public-multi-dir-docker-action/action1@0.0.1
+        with:
+          who-to-greet: "Action 1"
+
+      - name: Subdir 2 (using semver tag for package)
+        uses: immutable-actions/e2e-test-public-multi-dir-docker-action/action2@0.0.1
+        with:
+          who-to-greet: "Action 2"
+
+      - name: Subdir 3 (using semver tag for package)
+        uses: immutable-actions/e2e-test-public-multi-dir-docker-action/action3@0.0.1
+        with:
+          who-to-greet: "Action 3"
+
+      - name: Subdir 1 (using branch for repo commit)
+        uses: immutable-actions/e2e-test-public-multi-dir-docker-action/action1@main
+        with:
+          who-to-greet: "Action 1"
+
+      - name: Subdir 2 (using branch for repo commit)
+        uses: immutable-actions/e2e-test-public-multi-dir-docker-action/action2@main
+        with:
+          who-to-greet: "Action 2"
+
+      - name: Subdir 3 (using branch for repo commit)
+        uses: immutable-actions/e2e-test-public-multi-dir-docker-action/action3@main
+        with:
+          who-to-greet: "Action 3"
