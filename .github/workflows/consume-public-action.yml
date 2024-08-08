@@ -1,0 +1,40 @@
+# This is a test that internal and private actions which have packages
+# can still be resolved as repositories under certain circumstances.
+# These should succeed but we can check that they were not consumed as Packages
+# as there will be a (SHA:<sha>) referenced in the runner logs.
+
+name: Test consuming from a public repo
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [trigger-tests]
+  pull_request:
+    types: [opened, reopened]
+  workflow_call:
+
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-12]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+
+      - name: E2e Test Consume Action Repo branch
+        uses: immutable-actions/e2e-test-public-org-accessible-action@main
+        with:
+          who-to-greet: "Mona Lisa (action repo main branch)"
+
+      # It should be possible to resolve by SHA
+      - name: E2e Test Consume Action Repo SHA
+        uses: immutable-actions/e2e-test-public-org-accessible-action@8c2dd18f7390a59ce946dca528d2dc4f1d5d779e
+        with:
+          who-to-greet: "Mona Lisa (action repo SHA)"
+
+      # It should be possible to resolve by non semver Tag
+      - name: E2e Test Consume Action Repo non-semver Tag
+        uses: immutable-actions/e2e-test-public-org-accessible-action@v0.0.2
+        with:
+          who-to-greet: "Mona Lisa (action repo tag)"
