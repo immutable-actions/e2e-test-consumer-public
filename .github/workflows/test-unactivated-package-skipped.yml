@@ -1,0 +1,35 @@
+# This is a test that unactivated packages have no bearing on Action resolution.
+# In other words, these resolutions should behave as today, ignoring the Package.
+# This means all Semvers should work whether they exist on the Package or not.
+# The package in question has git tags v0.0.1, v1.1.1 but only Package version 0.0.1
+name: Test Unactivated Packages are skipped
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [trigger-tests]
+  pull_request:
+    types: [opened, reopened]
+  workflow_call:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-12]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+
+      # Even if the package has the tag, we should fall back to repository tag
+      - name: Test existing Package Semver resolved from Tag
+        uses: immutable-actions/e2e-test-public-unactivated-action@v0.0.1
+        with:
+          who-to-greet: "Mona Lisa (public)"
+
+
+      # It should be possible to resolve semver tags that don't exist on Package
+      - name: Test Semver not on Package resolves successfully
+        uses: immutable-actions/e2e-test-public-unactivated-action@v1.1.1
+        with:
+          who-to-greet: "Mona Lisa (public)"
