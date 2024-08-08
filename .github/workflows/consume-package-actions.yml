@@ -1,0 +1,45 @@
+# This is a basic test that it is possible to consume both private and internal actions
+# as packages when the sharing policy allows.
+
+name: Consume Private & Internal Package Actions (Happy Paths)
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [trigger-tests]
+  pull_request:
+    types: [opened, reopened]
+  workflow_call:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-12]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+
+      # Runs our private action in the same org from the package
+      - name: E2e Test Private Org Accessible Action
+        uses: immutable-actions/e2e-test-private-org-accessible-action@0.0.2
+        with:
+          who-to-greet: "Mona Lisa (private org-accessible)"
+
+      # Runs our internal action in the same org from the package
+      - name: E2e Test Internal Action
+        uses: immutable-actions/e2e-test-internal-org-accessible-action@0.0.2
+        with:
+          who-to-greet: "Mona Lisa (internal org-accessible)"
+
+      # Runs our private action in the same enterprise from the package
+      - name: E2e Test Private Enterprise Accessible Action
+        uses: immutable-actions/e2e-test-private-enterprise-accessible-action@0.0.1
+        with:
+          who-to-greet: "Mona Lisa (private org-accessible)"
+
+      # Runs our internal action in the same enterprise from the package
+      - name: E2e Test Private Enterprise Accessible Action
+        uses: immutable-actions/e2e-test-internal-enterprise-accessible-action@0.0.1
+        with:
+          who-to-greet: "Mona Lisa (private org-accessible)"
