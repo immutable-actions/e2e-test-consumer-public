@@ -1,0 +1,36 @@
+# This test checks that if an action package used to exist, the namespace is retired
+# for resolving actions via semver, and the git tags won't be used, so resolution fails.
+# The package which did exist for this NWO had one version (0.0.1)
+# Git tags should also exist for these versions, but should not be used.
+
+name: Consume Actions from a Tomstoned Package (will fail)
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [trigger-tests]
+  pull_request:
+    types: [opened, reopened]
+  workflow_call:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-12]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+
+      # Using a tag which did exist
+      - name: Tag which existed on tombstoned package
+        uses: immutable-actions/e2e-test-public-tombstoned-action@v0.0.1
+        with:
+          who-to-greet: "Mona Lisa (tag did exist on tombstoned package)"
+
+
+      # Using a tag which did not exist
+      - name: Tag which did not exist on tombstoned package (should still fail)
+        uses: immutable-actions/e2e-test-public-tombstoned-action@v0.0.2
+        with:
+          who-to-greet: "Mona Lisa (tag did not exist on tombstoned package)"
