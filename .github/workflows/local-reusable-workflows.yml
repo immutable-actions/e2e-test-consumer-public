@@ -1,0 +1,27 @@
+# This is a basic workflow to help you get started with Actions
+
+name: E2E Ruleset Workflow Passing Tests
+
+# Controls when the workflow will run
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+  repository_dispatch:
+    types: [trigger-tests]
+  
+jobs:
+  consume-composite-actions:
+    uses: ./.github/workflows/consume-composite-actions.yml
+  consume-multi-dir-actions:
+    uses: ./.github/workflows/consume-multi-dir-actions.yml
+  consume-package-actions:
+    uses: ./.github/workflows/consume-package-actions.yml
+  consume-prerelease-tags:
+    uses: ./.github/workflows/consume-prerelease-tags.yml
+  consume-repo-actions:
+    uses: ./.github/workflows/consume-repo-actions.yml
+  test-splat-versioning:
+    uses: ./.github/workflows/test-splat-versioning.yml
+  test-unactivated-package-skipped:
+    uses: ./.github/workflows/test-unactivated-package-skipped.yml
+  
