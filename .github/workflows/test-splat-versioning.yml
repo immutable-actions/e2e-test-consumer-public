@@ -1,7 +1,7 @@
 # This test checks that both old and new "splat version" patterns can be used
 # to consume Action Packages. These should all be resolved to valid versions.
 
-name: Consume Actions with Splat Tags
+name: Test Actions with Splat Tags
 
 on:
   workflow_dispatch:
